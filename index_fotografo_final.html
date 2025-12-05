@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio Fotográfico - Roberto</title>
+
+    <style>
+        /* ---------------------- VARIABLES DE ESTILO BÁSICAS ---------------------- */
+        :root {
+            --bg: #f7f7f7;           /* Fondo general, gris muy suave */
+            --bg-soft: #faf7f2;      /* Fondo suave cálido para bloques */
+            --card: #ffffff;         /* Color de las tarjetas y cabecera */
+            --text: #222222;         /* Color de texto principal */
+            --muted: #777777;        /* Color de texto secundario */
+            --accent: #d7b99a;       /* Tono cálido para detalles (botones, hovers) */
+            --radius: 12px;          /* Radio de borde estándar */
+            --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.06); /* Sombra suave */
+        }
+
+        /* ---------------------- ESTILOS GENERALES ---------------------- */
+        * {
+            box-sizing: border-box;  /* Asegura que padding/borde no alteren el ancho total */
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        a {
+            color: inherit;
+        }
+
+        /* ---------------------- CABECERA Y NAVEGACIÓN ---------------------- */
+        header {
+            position: sticky;        /* Mantiene la cabecera fija al hacer scroll */
+            top: 0;
+            z-index: 100;
+            padding: 18px 32px;
+            background-color: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(10px); /* Efecto cristal suave (si el navegador lo soporta) */
+            border-bottom: 1px solid #e2e2e2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        nav {
+            display: flex;
+            gap: 18px;
+        }
+
+        nav a {
+            font-size: 0.95rem;
+            text-decoration: none;
+            color: var(--muted);
+            padding-bottom: 2px;
+            border-bottom: 1px solid transparent;
+            transition: color 0.15s ease, border-color 0.15s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: var(--text);
+            border-color: var(--accent);
+        }
+
+        /* ---------------------- SECCIONES/VISTAS PRINCIPALES ---------------------- */
+        .view {
+            display: none;           /* Por defecto las vistas están ocultas */
+        }
+
+        .view--active {
+            display: block;          /* Solo la vista activa se muestra */
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 32px 20px 60px;
+        }
+
+        /* ---------------------- HERO DE INICIO ---------------------- */
+        .hero {
+            padding: 60px 24px 40px;
+            background: linear-gradient(180deg, var(--card), var(--bg-soft));
+            border-radius: 24px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 3vw, 2.6rem); /* Escala entre móvil y escritorio */
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .hero-subtitle {
+            font-size: 1rem;
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto 20px;
+        }
+
+        /* ---------------------- LISTA DE SESIONES EN INICIO ---------------------- */
+        .sessions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .session-card {
+            background-color: var(--card);
+            border-radius: var(--radius);
+            padding: 18px 18px 20px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            cursor: pointer;        /* Indica que la tarjeta es clicable */
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .session-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .session-cover {
+            width: 100%;
+            border-radius: 10px;
+            aspect-ratio: 4 / 3;    /* Mantiene proporción rectangular */
+            object-fit: cover;
+        }
+
+        .session-title {
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        .session-meta {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .session-link {
+            margin-top: 8px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        /* ---------------------- GALERÍAS DE CADA SESIÓN ---------------------- */
+        .session-header {
+            margin-bottom: 18px;
+        }
+
+        .session-header h2 {
+            font-weight: 400;
+            margin: 0 0 6px;
+        }
+
+        .session-header p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .gallery-grid img {
+            width: 100%;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: var(--shadow-soft);
+            cursor: zoom-in;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .gallery-grid img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 16px;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        /* ---------------------- LIGHTBOX SENCILLO ---------------------- */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;   /* Desactiva clics cuando está oculto */
+            transition: opacity 0.18s ease;
+            z-index: 200;
+        }
+
+        .lightbox--visible {
+            opacity: 1;
+            pointer-events: auto;   /* Activa clics solo cuando está visible */
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px;
+            box-shadow: 0 26px 80px rgba(0, 0, 0, 0.9);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            font-size: 28px;
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* ---------------------- SECCIÓN CONTACTO ---------------------- */
+        .contact-section {
+            margin-top: 60px;
+            padding: 32px 24px 28px;
+            background-color: var(--card);
+            border-radius: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .contact-section h2 {
+            margin-top: 0;
+            font-weight: 400;
+        }
+
+        .contact-text {
+            color: var(--muted);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+        }
+
+        .contact-email {
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .contact-email a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 12px;
+            max-width: 480px;
+        }
+
+        .contact-form label {
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 10px 11px;
+            border-radius: 8px;
+            border: 1px solid #dddddd;
+            font: inherit;
+        }
+
+        .contact-form textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .btn {
+            padding: 9px 16px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            background-color: var(--accent);
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .btn:hover {
+            filter: brightness(0.95);
+        }
+
+        /* ---------------------- PIE DE PÁGINA ---------------------- */
+        footer {
+            text-align: center;
+            padding: 22px;
+            font-size: 0.85rem;
+            color: var(--muted);
+        }
+
+        /* ---------------------- RESPONSIVE SENCILLO ---------------------- */
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            nav {
+                gap: 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- CABECERA CON NOMBRE Y NAVEGACIÓN -->
+    <header>
+        <div class="brand">Roberto · Fotografía de Retrato</div>
+
+        <nav>
+            <!-- data-nav-target nos sirve para saber qué vista mostrar desde JS -->
+            <a data-nav-target="view-home">Inicio</a>
+            <a data-nav-target="view-home">Sesiones</a>
+            <a href="#contacto">Contacto</a>
+        </nav>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main>
+        <!-- ===================== VISTA: INICIO / LISTA DE SESIONES ===================== -->
+        <section id="view-home" class="view view--active">
+            <section class="hero">
+                <h1 class="hero-title">Retratos familiares y de embarazo con alma</h1>
+                <p class="hero-subtitle">
+                    Sesiones íntimas, naturales y luminosas para documentar etapas únicas de tu vida:
+                    embarazo, familia y retratos personales.
+                </p>
+            </section>
+
+            <section aria-label="Sesiones fotográficas">
+                <div class="sessions-grid">
+                    <!-- Tarjeta de sesión 1 -->
+                    <article class="session-card" data-view-target="view-embarazo">
+                        <!-- Usa como portada una de tus fotos de embarazo -->
+                        <img src="eab6fa22-12a6-47c9-9cea-52e351a3d3cf.JPG"
+                             alt="Sesión de embarazo en estudio"
+                             class="session-cover" />
+                        <h2 class="session-title">Sesión de embarazo</h2>
+                        <p class="session-meta">Luz suave, tonos cálidos y retratos íntimos en estudio.</p>
+                        <span class="session-link">Ver sesión completa →</span>
+                    </article>
+
+                    <!-- Tarjeta de sesión 2 -->
+                    <article class="session-card" data-view-target="view-familia">
+                        <img src="_AM44577.JPG"
+                             alt="Sesión familiar en estudio"
+                             class="session-cover" />
+                        <h2 class="session-title">Sesión familiar</h2>
+                        <p class="session-meta">Momentos naturales en familia, con conexión y cercanía.</p>
+                        <span class="session-link">Ver sesión completa →</span>
+                    </article>
+
+                    <!-- Tarjeta de sesión 3 (puedes crear nuevas variando las imágenes) -->
+                    <article class="session-card" data-view-target="view-intimo">
+                        <img src="_AM44484.JPG"
+                             alt="Retrato íntimo madre e hijo"
+                             class="session-cover" />
+                        <h2 class="session-title">Retratos íntimos</h2>
+                        <p class="session-meta">Primeros planos y detalles que cuentan una historia.</p>
+                        <span class="session-link">Ver sesión completa →</span>
+                    </article>
+                </div>
+            </section>
+        </section>
+
+        <!-- ===================== VISTA: GALERÍA SESIÓN EMBARAZO ===================== -->
+        <section id="view-embarazo" class="view">
+            <!-- Enlace para volver a la vista de inicio -->
+            <div class="back-link" data-view-target="view-home">
+                ← Volver a todas las sesiones
+            </div>
+
+            <header class="session-header">
+                <h2>Sesión de embarazo</h2>
+                <p>Una selección de retratos de embarazo en estudio, con luz suave y composición limpia.</p>
+            </header>
+
+            <div class="gallery-grid">
+                <!-- Reutilizamos tus archivos con los nombres que ya tienes.
+                     Puedes añadir o quitar imágenes sin problema. -->
+                <img src="_AM44631.JPG" alt="Retrato embarazo 1" />
+                <img src="_AM44484.JPG" alt="Retrato embarazo 2" />
+                <img src="_AM44481.JPG" alt="Retrato embarazo 3" />
+                <img src="_AM44637.JPG" alt="Retrato embarazo 4" />
+                <!-- Si quieres añadir más, solo copia una línea de <img> y cambia la ruta -->
+            </div>
+        </section>
+
+        <!-- ===================== VISTA: GALERÍA SESIÓN FAMILIA ===================== -->
+        <section id="view-familia" class="view">
+            <div class="back-link" data-view-target="view-home">
+                ← Volver a todas las sesiones
+            </div>
+
+            <header class="session-header">
+                <h2>Sesión familiar</h2>
+                <p>Sesiones naturales en familia, con gestos espontáneos y sonrisas auténticas.</p>
+            </header>
+
+            <div class="gallery-grid">
+                <!-- Aquí agrupas las fotos más familiares -->
+                <img src="_AM44577.JPG" alt="Retrato familiar 1" />
+                <img src="_AM44528.JPG" alt="Retrato familiar 2" />
+                <img src="_AM44631.JPG" alt="Retrato familiar 3" />
+            </div>
+        </section>
+
+        <!-- ===================== VISTA: GALERÍA SESIÓN ÍNTIMA ===================== -->
+        <section id="view-intimo" class="view">
+            <div class="back-link" data-view-target="view-home">
+                ← Volver a todas las sesiones
+            </div>
+
+            <header class="session-header">
+                <h2>Retratos íntimos madre e hijo</h2>
+                <p>Retratos que se centran en la conexión y el gesto, en clave más cercana.</p>
+            </header>
+
+            <div class="gallery-grid">
+                <!-- Puedes mezclar aquí primeros planos o encuadres más cerrados -->
+                <img src="eab6fa22-12a6-47c9-9cea-52e351a3d3cf.JPG" alt="Retrato íntimo 1" />
+                <img src="_AM44481.JPG" alt="Retrato íntimo 2" />
+                <img src="_AM44637.JPG" alt="Retrato íntimo 3" />
+            </div>
+        </section>
+
+        <!-- ===================== SECCIÓN CONTACTO (COMÚN A TODAS LAS VISTAS) ===================== -->
+        <section id="contacto" class="contact-section">
+            <h2>Contacto</h2>
+            <p class="contact-text">
+                Si quieres reservar una sesión o tienes alguna consulta, puedes escribirme directamente a mi correo
+                o utilizar el formulario.
+            </p>
+
+            <!-- Muestra claramente tu correo de contacto.
+                 Si tu dirección es distinta, simplemente cambia el texto y el href. -->
+            <p class="contact-email">
+                Email directo:
+                <a href="mailto:robertobautista.gmail.com">
+                    robertobautista.gmail.com
+                </a>
+            </p>
+
+            <!-- Formulario sencillo que abre el cliente de correo del usuario (Outlook, Mail, etc.)
+                 Ten en cuenta que para envíos automáticos reales lo ideal es un backend o un servicio tipo Formspree. -->
+            <form class="contact-form"
+                  action="mailto:robertobautista.gmail.com"
+                  method="post"
+                  enctype="text/plain">
+                <div>
+                    <label for="nombre">Nombre</label>
+                    <input id="nombre" name="Nombre" type="text" placeholder="Tu nombre" required />
+                </div>
+
+                <div>
+                    <label for="email">Correo electrónico</label>
+                    <input id="email" name="Email" type="email" placeholder="tu@email.com" required />
+                </div>
+
+                <div>
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="Mensaje" placeholder="Cuéntame qué tipo de sesión te gustaría…"
+                              required></textarea>
+                </div>
+
+                <button type="submit" class="btn">Enviar mensaje</button>
+            </form>
+        </section>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer>
+        © 2025 Roberto · Fotografía de Retrato
+    </footer>
+
+    <!-- ===================== JAVASCRIPT: CAMBIO DE VISTAS Y LIGHTBOX ===================== -->
+    <script>
+        // ------------ UTILIDAD: CAMBIAR ENTRE VISTAS (INICIO / CADA SESIÓN) ------------
+        const views = document.querySelectorAll(".view");
+
+        /**
+         * showView: recibe el id de una sección (por ejemplo "view-embarazo")
+         * y se encarga de ocultar todas las vistas y mostrar solo la elegida.
+         */
+        function showView(id) {
+            views.forEach(view => {
+                view.classList.toggle("view--active", view.id === id);
+            });
+
+            // Lleva la página al inicio visualmente cuando cambiamos de sesión
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        // Enlaces de navegación (Inicio / Sesiones) que cambian a la vista de inicio
+        document.querySelectorAll("[data-nav-target]").forEach(link => {
+            link.addEventListener("click", event => {
+                event.preventDefault();              // Evita saltos raros de ancla
+                const targetId = link.dataset.navTarget;
+                showView(targetId);
+            });
+        });
+
+        // Tarjetas de sesión en la portada que abren cada galería
+        document.querySelectorAll("[data-view-target]").forEach(card => {
+            card.addEventListener("click", () => {
+                const targetId = card.dataset.viewTarget;
+                showView(targetId);
+            });
+        });
+
+        // Enlaces "Volver a todas las sesiones" dentro de cada galería
+        document.querySelectorAll(".back-link").forEach(back => {
+            back.addEventListener("click", () => {
+                const targetId = back.dataset.viewTarget;
+                showView(targetId);
+            });
+        });
+
+        // ------------ LIGHTBOX BÁSICO PARA AMPLIAR FOTOS ------------
+        // Creamos el contenedor de lightbox una sola vez
+        const lightbox = document.createElement("div");
+        lightbox.className = "lightbox";
+        lightbox.innerHTML = `
+            <button class="lightbox-close" aria-label="Cerrar">×</button>
+            <img src="" alt="Foto ampliada" />
+        `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = lightbox.querySelector("img");
+        const lightboxClose = lightbox.querySelector(".lightbox-close");
+
+        /**
+         * openLightbox: muestra el lightbox con la imagen indicada.
+         */
+        function openLightbox(src, alt) {
+            lightboxImg.src = src;
+            lightboxImg.alt = alt || "Foto de la sesión";
+            lightbox.classList.add("lightbox--visible");
+        }
+
+        /**
+         * closeLightbox: oculta el lightbox y limpia la imagen.
+         */
+        function closeLightbox() {
+            lightbox.classList.remove("lightbox--visible");
+            lightboxImg.src = "";
+        }
+
+        // Cierra al pulsar la X
+        lightboxClose.addEventListener("click", closeLightbox);
+
+        // Cierra si se hace clic en el fondo oscuro (pero no en la imagen)
+        lightbox.addEventListener("click", event => {
+            if (event.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Al hacer clic en cualquier imagen de la galería, abrimos el lightbox
+        document.querySelectorAll(".gallery-grid img").forEach(img => {
+            img.addEventListener("click", () => openLightbox(img.src, img.alt));
+        });
+    </script>
+</body>
+</html>
